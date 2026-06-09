@@ -6,7 +6,7 @@ from src.components.model_trainer import ModelTrainer
 def run_pipeline():
     RAW_DATA_PATH = "data/raw/indicadores_rem20_20260325.csv"  
     MODEL_OUTPUT_PATH = "storage/models/best_regression_pipeline"
-    TARGET_COL = "target_variable"                  
+    TARGET_COL = "INDICE_OCUPACIONAL"                  
 
     #guard check
     if not os.path.exists(RAW_DATA_PATH):
