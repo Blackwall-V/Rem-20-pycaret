@@ -16,7 +16,7 @@ class ModelTrainer:
         """
         print(f"--- Initializing PyCaret Regression Setup (Target: {self.target}) ---")
         
-    
+        #initialize regression enviroment
         self.exp.setup(
             data=train_df, 
             target=self.target, 
@@ -25,14 +25,14 @@ class ModelTrainer:
         )
         
         print(f"--- Comparing Regression Models (Optimizing for: {optimize_metric}) ---")
-
+        # compare models based on performance
         best_model = self.exp.compare_models(sort=optimize_metric)
         
         print(f"--- Finalizing and Saving the Best Model ---")
-
+        # finalize model
         final_model = self.exp.finalize_model(best_model)
-       
 
+        #save the pipeline and transformation
         self.exp.save_model(final_model, model_save_path)
         print(f"Successfully saved production regression pipeline to: {model_save_path}.pkl")
         
