@@ -1,18 +1,39 @@
-from pycaret.classification import ClassificationExperiment 
 import pandas as pd
+from pycaret.regression import RegressionExperiment
 
 class ModelTrainer:
-    def __init__(self, target_column: str):
+    def __init__(self, target_column: str, session_id: int = 42):
+        """
+        Initializes the ModelTrainer component for Regression.
+        """
         self.target = target_column
-        self.exp = ClassificationExperiment()
+        self.session_id = session_id
+        self.exp = RegressionExperiment()
 
-    def initiate_training(self, train_df: pd.DataFrame, model_save_path: str):
-        # 1. Initialize 
-        self.exp.setup(data=train_df, target=self.target, session_id=42, verbose=False)
+    def initiate_training(self, train_df: pd.DataFrame, model_save_path: str, optimize_metric: str = "R2"):
+        """
+        Runs PyCaret setup, compares regression models, and saves the top performer.
+        """
+        print(f"--- Initializing PyCaret Regression Setup (Target: {self.target}) ---")
         
-        # 2. Compare 
-        best_model = self.exp.compare_models()
+    
+        self.exp.setup(
+            data=train_df, 
+            target=self.target, 
+            session_id=self.session_id, 
+            verbose=False
+        )
         
-        # 3. Save 
-        self.exp.save_model(best_model, model_save_path)
-        print(f"Model saved successfully to {model_save_path}")
+        print(f"--- Comparing Regression Models (Optimizing for: {optimize_metric}) ---")
+
+        best_model = self.exp.compare_models(sort=optimize_metric)
+        
+        print(f"--- Finalizing and Saving the Best Model ---")
+
+        final_model = self.exp.finalize_model(best_model)
+       
+
+        self.exp.save_model(final_model, model_save_path)
+        print(f"Successfully saved production regression pipeline to: {model_save_path}.pkl")
+        
+        return final_model
