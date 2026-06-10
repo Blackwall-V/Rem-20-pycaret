@@ -12,7 +12,7 @@ from src.components.data_preprocessing import DataPreprocessing
 from src.components.model_trainer import ModelTrainer
 
 def run_pipeline():
-    RAW_DATA_PATH = "data/raw/"  
+    RAW_DATA_PATH = "/home/v/Projects/Rem-20-pycaret/data/raw/indicadores_rem20_20260325.csv"  
     MODEL_OUTPUT_PATH = "storage/models/best_regression_pipeline"
     TARGET_COL = "INDICE_OCUPACIONAL"                  
 

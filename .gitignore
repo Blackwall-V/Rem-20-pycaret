@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.venv/
+venv/
+ENV/
+env/
+
+logs.log
+mlruns/
+storage/models/*.pkl
+storage/logs/*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Data handling 
+# (Optional: Ignore heavy data files if they exceed Git limits, but keep the folders)
+# !data/raw/.gitkeep
+# !data/processed/.gitkeep
+# !data/final/.gitkeep

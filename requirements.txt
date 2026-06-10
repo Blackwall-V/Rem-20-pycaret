@@ -1,0 +1,4 @@
+pycaret[full]
+pandas
+numpy
+scikit-learn
