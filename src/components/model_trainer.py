@@ -1,14 +1,8 @@
-import mlflow.tracking.fluent as _fluent
 
-if not hasattr(_fluent._active_run_stack, "copy"):
-    _fluent._active_run_stack.copy = lambda: []
 import pandas as pd
 from pycaret.regression import RegressionExperiment
-import mlflow
 
 
-mlflow.set_tracking_uri("mlruns")
-mlflow.set_experiment("rem-20-regression")
 
 class ModelTrainer:
     def __init__(self, target_column: str, session_id: int = 42):
@@ -37,7 +31,8 @@ class ModelTrainer:
         
         print(f"--- Comparing Regression Models (Optimizing for: {optimize_metric}) ---")
         # compare models based on performance
-        best_model = self.exp.compare_models(sort=optimize_metric)
+        best_model = self.exp.compare_models(sort=optimize_metric, turbo=True)
+
         
         print(f"--- Finalizing and Saving the Best Model ---")
         # finalize model
