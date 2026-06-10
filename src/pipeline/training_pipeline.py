@@ -1,12 +1,10 @@
 import os
 import sys
 
-# 1. FIX PATH FIRST: Calculate and inject project root before doing ANY custom imports
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-# 2. NOW DO IMPORTS: Python can now safely see the 'src' directory
 import pandas as pd
 from src.components.data_preprocessing import DataPreprocessing
 from src.components.model_trainer import ModelTrainer
@@ -36,7 +34,7 @@ def run_pipeline():
     trainer.initiate_training(
         train_df=clean_df, 
         model_save_path=MODEL_OUTPUT_PATH, 
-        optimize_metric="R2" 
+        optimize_metric="R2"
     )
 
 if __name__ == "__main__":
