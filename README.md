@@ -107,7 +107,7 @@ Then open [http://localhost:5000](http://localhost:5000) in your browser.
 
 ## License
 
-This project is open for experimentation. No license specified — please contact the repository owner before using in production.
+This project is open for experimentation.
 
 ---
 
