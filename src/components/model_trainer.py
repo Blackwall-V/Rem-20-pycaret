@@ -21,7 +21,9 @@ class ModelTrainer:
             data=train_df, 
             target=self.target, 
             session_id=self.session_id, 
-            verbose=False
+            verbose=False,
+            log_experiment='mlflow',
+            experiment_name='rem20_regression'
         )
         
         print(f"--- Comparing Regression Models (Optimizing for: {optimize_metric}) ---")
