@@ -10,9 +10,9 @@ from src.components.data_preprocessing import DataPreprocessing
 from src.components.model_trainer import ModelTrainer
 
 def run_pipeline():
-    RAW_DATA_PATH = "/home/v/Projects/Rem-20-pycaret/data/raw/indicadores_rem20_20260325.csv"  
+    RAW_DATA_PATH = "/home/v/Projects/Rem-20-pycaret/data/raw/DS4-21-Telco-Customer-Churn.csv"  
     MODEL_OUTPUT_PATH = "storage/models/best_regression_pipeline"
-    TARGET_COL = "INDICE_OCUPACIONAL"                  
+    TARGET_COL = "MonthlyCharges"                  
 
     # guard check
     if not os.path.exists(RAW_DATA_PATH):

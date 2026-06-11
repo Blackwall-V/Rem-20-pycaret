@@ -1,44 +1,42 @@
-# %% [markdown]
-# # Rem-20 Pipeline Interactive Scratchpad
-
-# %%
+# %% Reentrenamiento rápido para sincronizar columnas
 import os
 import sys
 import pandas as pd
+from pycaret.regression import setup, compare_models, finalize_model, save_model
 
-# Fix path context so local modules load flawlessly
-project_root = os.path.abspath(os.getcwd())
+project_root = "/home/v/Projects/Rem-20-pycaret"
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from src.components.data_preprocessing import DataPreprocessing
-from src.components.model_trainer import ModelTrainer
 
-# %% [markdown]
-# ### Step 1: Run Preprocessor and Inspect Data Frame Shape
-
-# %%
-RAW_DATA_PATH = "data/raw/indicadores_rem20_20260325.csv"
+# 1. Cargar y limpiar datos con tu lógica actual
+RAW_DATA_PATH = "/home/v/Projects/Rem-20-pycaret/data/raw/DS4-21-Telco-Customer-Churn.csv"
 preprocessor = DataPreprocessing(raw_data_path=RAW_DATA_PATH)
-clean_df = preprocessor.clean_data()
+clean_df = preprocessor.clean_data().reset_index(drop=True)
 
-# Print directly inline to inspect your data
-print(f"Dataframe loaded! Rows: {clean_df.shape[0]}, Columns: {clean_df.shape[1]}")
-print(clean_df.head())
+print("Inicializando nuevo Setup...")
+# 2. Inicializar setup real (dejamos que PyCaret maneje su split por defecto)
+setup(data=clean_df, target="MonthlyCharges", verbose=False, html=False, session_id=123)
 
-# %% [markdown]
-# ### Step 2: Fast Training Block (MLflow Tracking turned OFF)
+print("Entrenando modelo rápido (Fast Mode)...")
+# 3. Entrenar un modelo rápido (ej. un árbol de decisión o una regresión lineal)
+best_model = compare_models(budget_time=1, verbose=False) 
+final_model = finalize_model(best_model)
 
-# %%
-MODEL_OUTPUT_PATH = "storage/models/best_regression_pipeline"
-TARGET_COL = "INDICE_OCUPACIONAL"
+print("Guardando nuevo pipeline sincronizado...")
+# 4. Sobreescribimos el archivo pkl viejo
+MODEL_OUTPUT_PATH = "/home/v/Projects/Rem-20-pycaret/storage/models/best_regression_pipeline"
+save_model(final_model, MODEL_OUTPUT_PATH)
+print("¡Pipeline sincronizado con éxito!")
 
-trainer = ModelTrainer(target_column=TARGET_COL, session_id=123)
 
-# Note: track_experiment=False bypasses MLflow to optimize execution time!
-trainer.initiate_training(
-    train_df=clean_df, 
-    model_save_path=MODEL_OUTPUT_PATH, 
-    optimize_metric="R2",
-    track_experiment=False  
-)
+# %% Visualización del modelo sincronizado
+from pycaret.regression import load_model, plot_model
+
+MODEL_OUTPUT_PATH = "/home/v/Projects/Rem-20-pycaret/storage/models/best_regression_pipeline"
+pipeline_cargado = load_model(MODEL_OUTPUT_PATH)
+
+print("\n--- Generando Gráficos ---")
+plot_model(pipeline_cargado, plot="feature", save=True)
+plot_model(pipeline_cargado, plot="error", save=True)
